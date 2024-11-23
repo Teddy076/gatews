@@ -9,6 +9,7 @@ import logging
 import ssl
 import time
 import typing
+import certifi
 
 import websockets
 from websockets.exceptions import WebSocketException
@@ -251,7 +252,7 @@ class Connection(object):
             try:
                 ctx = None
                 if self.cfg.host.startswith("wss://"):
-                    ctx = ssl.create_default_context()
+                    ctx = ssl.create_default_context(cafile=certifi.where())
                     if not self.cfg.verify:
                         ctx.check_hostname = False
                         ctx.verify_mode = ssl.CERT_NONE
